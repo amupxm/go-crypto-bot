@@ -3,13 +3,20 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 
 	crypto_service "github.com/amupxm/go-crypto-bot/crypto_service"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	bot, err := tgbotapi.NewBotAPI("1415691028:AAF0oHXfu-Xdfl6Q00Fqi9JULd6gh-hAYoQ")
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	botToken := os.Getenv("BOT_TOKEN")
+	bot, err := tgbotapi.NewBotAPI(botToken)
 	if err != nil {
 		log.Panic(err)
 	}
