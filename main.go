@@ -29,9 +29,9 @@ func main() {
 		if update.InlineQuery == nil {
 			continue
 		}
-		log.Println(update.InlineQuery.Query)
 		articleArrays := createInlineQueryResultArticles(update.InlineQuery.ID, update.InlineQuery.Query)
 		bot.AnswerInlineQuery(tgbotapi.InlineConfig{InlineQueryID: update.InlineQuery.ID, CacheTime: 0, Results: articleArrays})
+
 	}
 }
 
@@ -39,7 +39,8 @@ func createInlineQueryResultArticles(ID string, query string) []interface{} {
 	msgArray := []interface{}{}
 	results, _ := crypto_service.SearchByName(query)
 	for _, item := range results {
-		msg := tgbotapi.NewInlineQueryResultArticle(item.Name, item.Name, fmt.Sprintf("%-3s (%s)  \n💲Price: %f\n⌛️last hour: %f%%\n📅last day: %f%%\n🌜last Week: %f%%\n", item.Name, item.Symbol, item.Price, item.PercentChange1h, item.PercentChange24h, item.PercentChange1w))
+
+		msg := tgbotapi.NewInlineQueryResultArticleMarkdown(item.Name, item.Name, fmt.Sprintf("***%-3s (*%s*)***  \n💲Price: %f\n⌛️last hour: %f%%\n📅last day: %f%%\n🌜last Week: %f%%\n", item.Name, item.Symbol, item.Price, item.PercentChange1h, item.PercentChange24h, item.PercentChange1w))
 		msgArray = append(msgArray, msg)
 	}
 	return msgArray
